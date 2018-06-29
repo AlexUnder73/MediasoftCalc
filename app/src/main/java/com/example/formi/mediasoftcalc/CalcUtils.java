@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 public class CalcUtils {
 
+    // Расчет
     public static double calculate(double a, double b, String operation){
 
         switch (operation){
