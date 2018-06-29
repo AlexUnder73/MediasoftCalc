@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViews();
+        initViews(); // Инициализация view-элементов
 
         btn0.setOnClickListener(onNumClick);
         btn1.setOnClickListener(onNumClick);
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity{
         btnPlus.setOnClickListener(onOperationClick);
     }
 
+    // Реализация слушателя при клике на "number-button"
     View.OnClickListener onNumClick = new View.OnClickListener() {
 
         @Override
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity{
         }
     };
 
+    // Реализация слушателя при клике на "operation-button"
     View.OnClickListener onOperationClick = new View.OnClickListener(){
         @Override
         public void onClick(View v){
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity{
         }
     };
 
+    // Реализация слушателя при клике на "="
     View.OnClickListener onEqualClick = new View.OnClickListener(){
         @Override
         public void onClick(View v){
@@ -177,6 +180,7 @@ public class MainActivity extends AppCompatActivity{
         }
     };
 
+    // Реализация слушателя при клике на "DEL"
     View.OnClickListener onDeleteClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -184,6 +188,7 @@ public class MainActivity extends AppCompatActivity{
         }
     };
 
+    // Вспомогательная функция, очищающее UI
     private void clear(){
         entered = "";
         txtEntered.setText(entered);
@@ -192,6 +197,7 @@ public class MainActivity extends AppCompatActivity{
         isOper = false;
     }
 
+    // Функция, которая скролит horizontalScrollView вправо до упора
     private void scrollToRight(){
         mScrollView.postDelayed(new Runnable() {
             @Override
@@ -201,6 +207,7 @@ public class MainActivity extends AppCompatActivity{
         }, 0);
     }
 
+    // Совершает непосредственный расчет и устанавливает значение в поле txtResult(TextView)
     private boolean getResult(String op){
         String[] splitedString = entered.split(Pattern.quote(op));
 
