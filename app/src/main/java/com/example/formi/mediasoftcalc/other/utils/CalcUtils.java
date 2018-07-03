@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.helper;
+package com.example.formi.mediasoftcalc.other.utils;
 
 import java.util.regex.Pattern;
 

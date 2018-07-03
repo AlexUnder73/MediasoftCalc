@@ -13,6 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:layout_height="match_parent">
@@ -25,26 +26,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <HorizontalScrollView
-            android:id="@+id/hScrollView1"
+        <TextView
+            android:id="@+id/txtCurrentCalc"
+            android:textSize="24sp"
             android:layout_toRightOf="@+id/txtBuf1"
-            android:scrollbars="none"
-            android:paddingLeft="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingStart="8dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp" />
 
-            <TextView
-                android:id="@+id/txtCurrentCalc"
-                android:textSize="24sp"
-                android:textColor="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </HorizontalScrollView>
 
         <TextView
             android:id="@+id/txtBuf2"
-            android:layout_below="@+id/hScrollView1"
+            android:layout_below="@+id/txtCurrentCalc"
             android:textSize="24sp"
             android:layout_marginTop="8dp"
             android:textColor="@color/colorPrimaryDark"
@@ -52,24 +47,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <HorizontalScrollView
-            android:layout_below="@+id/hScrollView1"
-            android:id="@+id/hScrollView2"
-            android:scrollbars="none"
-            android:paddingLeft="8dp"
-            android:paddingStart="8dp"
+        <TextView
+            android:id="@+id/txtItemResult"
+            android:textSize="24sp"
+            android:layout_below="@+id/txtCurrentCalc"
+            android:layout_toRightOf="@id/txtBuf2"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/txtBuf2"
-            android:layout_width="match_parent"
+            android:paddingStart="8dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/txtBuf2">
-                <TextView
-                android:id="@+id/txtItemResult"
-                android:textSize="24sp"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </HorizontalScrollView>
+            android:paddingLeft="8dp" />
 
     </RelativeLayout>
 

@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.model;
+package com.example.formi.mediasoftcalc.domain.model;
 
 public class Calculation {
 

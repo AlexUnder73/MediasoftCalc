@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.ui;
+package com.example.formi.mediasoftcalc.presentation.MainActivity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +8,11 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-import com.example.formi.mediasoftcalc.helper.CalcUtils;
-import com.example.formi.mediasoftcalc.model.Calculation;
-import com.example.formi.mediasoftcalc.helper.DbHelper;
+import com.example.formi.mediasoftcalc.other.utils.CalcUtils;
+import com.example.formi.mediasoftcalc.domain.model.Calculation;
+import com.example.formi.mediasoftcalc.data.db.DbHelper;
 import com.example.formi.mediasoftcalc.R;
+import com.example.formi.mediasoftcalc.presentation.StoryActivity.StoryActivity;
 
 import java.util.regex.Pattern;
 

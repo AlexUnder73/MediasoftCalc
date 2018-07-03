@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.helper;
+package com.example.formi.mediasoftcalc.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.formi.mediasoftcalc.model.Calculation;
+import com.example.formi.mediasoftcalc.domain.model.Calculation;
+import com.example.formi.mediasoftcalc.other.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,7 @@ public class DbHelper extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
     }
 }

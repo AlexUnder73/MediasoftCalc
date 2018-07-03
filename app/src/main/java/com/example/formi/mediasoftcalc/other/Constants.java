@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.helper;
+package com.example.formi.mediasoftcalc.other;
 
 import android.provider.BaseColumns;
 
@@ -8,7 +8,7 @@ public class Constants {
         public static final String DATABASE_NAME = "calculationsDB";
         public static final int DATABASE_VERSION = 1;
 
-        class Queries{
+        public class Queries{
             public static final String CREATE_TABLE = "CREATE TABLE " + Constants.DataBase.Columns.TABLE_NAME + "("
                     + Constants.DataBase.Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + Constants.DataBase.Columns.COLUMN_EXPRESSION + " TEXT NOT NULL, "
@@ -18,7 +18,7 @@ public class Constants {
             public static final String SELECT_ALL = "SELECT * FROM " + Columns.TABLE_NAME;
         }
 
-        class Columns implements BaseColumns{
+        public class Columns implements BaseColumns{
             public static final String TABLE_NAME = "calculations";
 
             public static final String COLUMN_EXPRESSION = "expression";

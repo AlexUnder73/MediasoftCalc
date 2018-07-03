@@ -1,10 +1,9 @@
-package com.example.formi.mediasoftcalc.ui;
+package com.example.formi.mediasoftcalc.presentation.StoryActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.formi.mediasoftcalc.model.Calculation;
-import com.example.formi.mediasoftcalc.adapter.CalculationAdapter;
-import com.example.formi.mediasoftcalc.helper.DbHelper;
+import com.example.formi.mediasoftcalc.domain.model.Calculation;
+import com.example.formi.mediasoftcalc.presentation.StoryActivity.adapter.CalculationAdapter;
+import com.example.formi.mediasoftcalc.data.db.DbHelper;
 import com.example.formi.mediasoftcalc.R;
 
 import java.util.List;

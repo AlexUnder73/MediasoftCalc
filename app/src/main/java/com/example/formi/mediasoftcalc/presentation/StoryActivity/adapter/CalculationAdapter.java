@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.adapter;
+package com.example.formi.mediasoftcalc.presentation.StoryActivity.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,24 +9,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.formi.mediasoftcalc.R;
-import com.example.formi.mediasoftcalc.model.Calculation;
+import com.example.formi.mediasoftcalc.domain.model.Calculation;
 
 import java.util.List;
 
 public class CalculationAdapter extends RecyclerView.Adapter<CalculationAdapter.CalculationViewHolder> {
 
-    private Context mCtx;
+    private Context ctx;
     private List<Calculation> calculationList;
 
     public CalculationAdapter(Context ctx, List<Calculation> calculationList){
-        mCtx = ctx;
+        this.ctx = ctx;
         this.calculationList = calculationList;
     }
 
     @NonNull
     @Override
     public CalculationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mCtx).inflate(R.layout.calculation_item, parent, false);
+        View view = LayoutInflater.from(ctx).inflate(R.layout.calculation_item, parent, false);
         return new CalculationViewHolder(view);
     }
 
