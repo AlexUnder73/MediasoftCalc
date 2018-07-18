@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/fragment_container_story"
+        android:layout_weight="2"
+        android:name="com.example.formi.mediasoftcalc.presentation.story.StoryFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <fragment
+        android:id="@+id/fragment_container_calc"
+        android:layout_weight="1"
+        android:name="com.example.formi.mediasoftcalc.presentation.main.MainFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

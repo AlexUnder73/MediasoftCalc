@@ -1,27 +1,30 @@
-package com.example.formi.mediasoftcalc.presentation.StoryActivity;
+package com.example.formi.mediasoftcalc.presentation.story;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.formi.mediasoftcalc.domain.model.Calculation;
-import com.example.formi.mediasoftcalc.presentation.StoryActivity.adapter.CalculationAdapter;
-import com.example.formi.mediasoftcalc.data.db.DbHelper;
 import com.example.formi.mediasoftcalc.R;
+import com.example.formi.mediasoftcalc.data.db.DbHelper;
+import com.example.formi.mediasoftcalc.domain.model.Calculation;
+import com.example.formi.mediasoftcalc.presentation.story.adapter.CalculationAdapter;
 
 import java.util.List;
 
-public class StoryActivity extends AppCompatActivity {
+public class StoryFragment extends Fragment {
 
     private RecyclerView recView;
-    private CalculationAdapter mAdapter;
+    private CalculationAdapter adapter;
 
     private List<Calculation> calculationList;
 
@@ -30,39 +33,42 @@ public class StoryActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private TextView txtNoCalculations;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_story);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_story, container, false);
+    }
 
-        txtNoCalculations = findViewById(R.id.txtNoCalc);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        txtNoCalculations = view.findViewById(R.id.txtNoCalc);
 
-        fab = findViewById(R.id.fab);
+        fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(onFabClickListener);
 
-        dbHelper = new DbHelper(this);
+        dbHelper = new DbHelper(getContext());
 
         calculationList = dbHelper.getCalculationList();
         if(calculationList.size() == 0){
-            fab.setVisibility(View.INVISIBLE);
+            fab.setVisibility(View.GONE);
             txtNoCalculations.setVisibility(View.VISIBLE);
         }else{
             fab.setVisibility(View.VISIBLE);
-            txtNoCalculations.setVisibility(View.INVISIBLE);
+            txtNoCalculations.setVisibility(View.GONE);
         }
 
-        mAdapter = new CalculationAdapter(this, calculationList);
+        adapter = new CalculationAdapter(getContext(), calculationList);
 
-        recView = findViewById(R.id.recView);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        recView = view.findViewById(R.id.recView);
+        recView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recView.setAdapter(mAdapter);
+        recView.setAdapter(adapter);
     }
 
     View.OnClickListener onFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(StoryActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Подтверждение действия")
                     .setMessage("Вы действительно хотите удалить всю историю вычислений?")
                     .setCancelable(false)
@@ -89,12 +95,19 @@ public class StoryActivity extends AppCompatActivity {
     public void clear(){
         final int size = calculationList.size();
         calculationList.clear();
-        mAdapter.notifyItemRangeRemoved(0, size);
+        adapter.notifyItemRangeRemoved(0, size);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         dbHelper.getDataToLogs();
+    }
+
+    public void updateRecyclerView(Calculation calculation){
+        calculationList.add(calculation);
+        adapter.notifyDataSetChanged();
+        txtNoCalculations.setVisibility(View.GONE);
+        fab.setVisibility(View.VISIBLE);
     }
 }

@@ -1,29 +1,47 @@
-package com.example.formi.mediasoftcalc.presentation.MainActivity;
+package com.example.formi.mediasoftcalc.presentation.main;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-import com.example.formi.mediasoftcalc.other.utils.CalcUtils;
-import com.example.formi.mediasoftcalc.domain.model.Calculation;
-import com.example.formi.mediasoftcalc.data.db.DbHelper;
 import com.example.formi.mediasoftcalc.R;
-import com.example.formi.mediasoftcalc.presentation.StoryActivity.StoryActivity;
+import com.example.formi.mediasoftcalc.data.db.DbHelper;
+import com.example.formi.mediasoftcalc.domain.model.Calculation;
+import com.example.formi.mediasoftcalc.other.utils.CalcUtils;
 
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity{
+public class MainFragment extends Fragment {
+
+    private static final String KEY_ENTERED = "key_entered";
+    private static final String KEY_RESULT = "key_result";
+    private static final String KEY_OPERATION = "key_operation";
+
+    public interface OnButtonStoryClickListener{
+        void onButtonClickListener();
+        void onEqualsClickListener(Calculation calculation);
+    }
+
+    private OnButtonStoryClickListener onButtonStoryClickListener;
+
 
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnDot, btn0, btnResult,
-    btnDel, btnDiv, btnMult, btnMinus, btnPlus;
+            btnDel, btnDiv, btnMult, btnMinus, btnPlus;
     private TextView txtEntered, txtResult;
     private Button btnAllCalcs;
 
-    private HorizontalScrollView mScrollView;
+    private HorizontalScrollView scrollView;
+
+    private double result;
 
     private String entered = "";
     private String oper = "";
@@ -31,14 +49,17 @@ public class MainActivity extends AppCompatActivity{
 
     private DbHelper dbHelper;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
 
-        dbHelper = new DbHelper(this);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        dbHelper = new DbHelper(getContext());
 
-        initViews(); // Инициализация view-элементов
+        initViews(view); // Инициализация view-элементов
 
         btn0.setOnClickListener(onNumClick);
         btn1.setOnClickListener(onNumClick);
@@ -64,12 +85,25 @@ public class MainActivity extends AppCompatActivity{
         btnAllCalcs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, StoryActivity.class));
+                if (onButtonStoryClickListener != null) {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        onButtonStoryClickListener.onButtonClickListener();
+                    }
+                }
             }
         });
     }
 
-    // Реализация слушателя при клике на "number-button"
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            onButtonStoryClickListener = (OnButtonStoryClickListener) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException(context.toString() + " должен реализовывать интерфейс OnFragmentInteractionListener");
+        }
+    }
+
     View.OnClickListener onNumClick = new View.OnClickListener() {
 
         @Override
@@ -211,10 +245,10 @@ public class MainActivity extends AppCompatActivity{
 
     // Функция, которая скролит horizontalScrollView вправо до упора
     private void scrollToRight(){
-        mScrollView.postDelayed(new Runnable() {
+        scrollView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                scrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             }
         }, 0);
     }
@@ -230,48 +264,70 @@ public class MainActivity extends AppCompatActivity{
         double val1 = Double.valueOf(splitedString[0]);
         double val2 = Double.valueOf(splitedString[1]);
 
-        double result = CalcUtils.calculate(val1, val2, op);
+        result = CalcUtils.calculate(val1, val2, op);
 
         txtResult.setText(String.valueOf(result));
 
-        dbHelper.addCalculation(new Calculation(entered, String.valueOf(result)));
+        Calculation calculation = new Calculation(entered, String.valueOf(result));
+
+        dbHelper.addCalculation(calculation);
+
+        onButtonStoryClickListener.onEqualsClickListener(calculation);
+        /*calculationList.add(cal);
+        adadpter.notifyDataSetChanged();*/
 
         return true;
     }
 
-    private void initViews(){
-        btn0 = findViewById(R.id.btn0);
-        btn1 = findViewById(R.id.btn1);
-        btn2 = findViewById(R.id.btn2);
-        btn3 = findViewById(R.id.btn3);
-        btn4 = findViewById(R.id.btn4);
-        btn5 = findViewById(R.id.btn5);
-        btn6 = findViewById(R.id.btn6);
-        btn7 = findViewById(R.id.btn7);
-        btn8 = findViewById(R.id.btn8);
-        btn9 = findViewById(R.id.btn9);
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        btnDot = findViewById(R.id.btnDot);
-        btnResult = findViewById(R.id.btnResult);
-        btnDel = findViewById(R.id.btnDelete);
-        btnDiv = findViewById(R.id.btnDiv);
-        btnMult = findViewById(R.id.btnMult);
-        btnMinus = findViewById(R.id.btnMinus);
-        btnPlus = findViewById(R.id.btnPlus);
-
-        txtEntered = findViewById(R.id.txtEntered);
-        txtResult = findViewById(R.id.txtResult);
-
-        mScrollView = findViewById(R.id.horScrollView);
-
-        btnAllCalcs = findViewById(R.id.btnAllCalcs);
+        outState.putString(KEY_ENTERED, entered);
+        outState.putDouble(KEY_RESULT, result);
+        outState.putString(KEY_OPERATION, oper);
     }
 
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
 
-        dbHelper.deleteAllData();
-    }*/
+        if (savedInstanceState != null) {
+            entered = savedInstanceState.getString(KEY_ENTERED);
+            result = savedInstanceState.getDouble(KEY_RESULT);
+            oper = savedInstanceState.getString(KEY_OPERATION);
+
+            txtEntered.setText(entered);
+            txtResult.setText(String.valueOf(result));
+        }
+    }
+
+    private void initViews(View view){
+        btn0 = view.findViewById(R.id.btn0);
+        btn1 = view.findViewById(R.id.btn1);
+        btn2 = view.findViewById(R.id.btn2);
+        btn3 = view.findViewById(R.id.btn3);
+        btn4 = view.findViewById(R.id.btn4);
+        btn5 = view.findViewById(R.id.btn5);
+        btn6 = view.findViewById(R.id.btn6);
+        btn7 = view.findViewById(R.id.btn7);
+        btn8 = view.findViewById(R.id.btn8);
+        btn9 = view.findViewById(R.id.btn9);
+
+        btnDot = view.findViewById(R.id.btnDot);
+        btnResult = view.findViewById(R.id.btnResult);
+        btnDel = view.findViewById(R.id.btnDelete);
+        btnDiv = view.findViewById(R.id.btnDiv);
+        btnMult = view.findViewById(R.id.btnMult);
+        btnMinus = view.findViewById(R.id.btnMinus);
+        btnPlus = view.findViewById(R.id.btnPlus);
+
+        txtEntered = view.findViewById(R.id.txtEntered);
+        txtResult = view.findViewById(R.id.txtResult);
+
+        scrollView = view.findViewById(R.id.horScrollView);
+
+        btnAllCalcs = view.findViewById(R.id.btnAllCalcs);
+    }
 
 }

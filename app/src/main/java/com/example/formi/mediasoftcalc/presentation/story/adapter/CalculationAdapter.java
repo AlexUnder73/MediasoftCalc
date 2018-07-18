@@ -1,4 +1,4 @@
-package com.example.formi.mediasoftcalc.presentation.StoryActivity.adapter;
+package com.example.formi.mediasoftcalc.presentation.story.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
